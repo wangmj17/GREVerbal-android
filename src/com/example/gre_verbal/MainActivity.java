@@ -3,11 +3,11 @@ package com.example.gre_verbal;
 import com.example.gre_verbal.R;
 
 import android.app.Activity;
-import android.graphics.drawable.Drawable;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
@@ -70,6 +70,14 @@ public class MainActivity extends Activity {
 		int buttonImageHeight = (int) (buttonImageWidth / 0.72);
 		
 		ImageView exerciseButton = new ImageView(this);
+		exerciseButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				startActivityForResult(new Intent(MainActivity.this,VerbalExerciseActivity.class),0);
+			}
+		});
 		exerciseButton.setImageResource(R.drawable.verbalexercise);
 		exerciseButton.setPadding(this.screenWidth / 4 - buttonImageWidth / 2, this.screenWidth / 4 - buttonImageHeight / 2, this.screenWidth / 4 - buttonImageWidth / 2, this.screenWidth / 4 - buttonImageHeight / 2);
 		lp =  new RelativeLayout.LayoutParams(this.screenWidth / 2, this.screenWidth / 2);

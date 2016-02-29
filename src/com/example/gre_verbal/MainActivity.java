@@ -1,10 +1,18 @@
 package com.example.gre_verbal;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
 import com.example.gre_verbal.R;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -14,6 +22,7 @@ import android.widget.RelativeLayout.LayoutParams;
 
 public class MainActivity extends Activity {
 
+	final int BUFFER_SIZE = 10000;
 	private int screenWidth, screenHeight;
 	private RelativeLayout mainActivityLayout;
 	
@@ -31,7 +40,36 @@ public class MainActivity extends Activity {
 		this.screenWidth = wm.getDefaultDisplay().getWidth();
 		this.screenHeight = wm.getDefaultDisplay().getHeight();
 		
+		this.checkDatabase();
 		this.initView();
+	}
+	
+	private void checkDatabase(){
+		final String DB_NAME = "countries.db";
+		final String PACKAGE_NAME = "com.example.gre_verbal";
+		final String DB_PATH = "/data"
+	            + Environment.getDataDirectory().getAbsolutePath() + "/"
+	            + PACKAGE_NAME;
+		try {
+			if (!(new File(DB_PATH + "/" + DB_NAME).exists())){
+				InputStream is = this.getResources().openRawResource(
+	                    R.raw.gre);
+				FileOutputStream fos = new FileOutputStream(DB_PATH + "/" + DB_NAME);
+				byte[] buffer = new byte[BUFFER_SIZE];
+				int count = 0;
+	            while ((count = is.read(buffer)) > 0) {
+	                fos.write(buffer, 0, count);
+	            }
+	            fos.close();
+	            is.close(); 
+			}
+		}catch (FileNotFoundException e) {
+            Log.e("Database", "File not found");
+            e.printStackTrace();
+        } catch (IOException e) {
+            Log.e("Database", "IO exception");
+            e.printStackTrace();
+        } 
 	}
 	
 	@SuppressWarnings("deprecation")
